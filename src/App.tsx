@@ -588,13 +588,41 @@ function ChecklistApp() {
             }
             options={["", ...WEATHER]}
           />
-          <NumberField label="外気温(℃)"$1/>
-          <NumberField label="初沈界面 NO.1(m)"$1/>
-          <NumberField label="初沈界面 NO.2(m)"$1/>
-          <NumberField label="PAC残量(㎥)"$1/>
-          <NumberField label="脱離液 pH"$1/>
-          <NumberField label="脱離液 水温(℃)"$1/>
-          <NumberField label="含水率(%)"$1/>
+          <NumberField
+            label="外気温(℃)"
+            value={form.header.airTemp}
+            onChange={(v) => setForm((p) => ({ ...p, header: { ...p.header, airTemp: v } }))}
+          />
+          <NumberField
+            label="初沈界面 NO.1(m)"
+            value={form.header.primarySettlingNo1}
+            onChange={(v) => setForm((p) => ({ ...p, header: { ...p.header, primarySettlingNo1: v } }))}
+          />
+          <NumberField
+            label="初沈界面 NO.2(m)"
+            value={form.header.primarySettlingNo2}
+            onChange={(v) => setForm((p) => ({ ...p, header: { ...p.header, primarySettlingNo2: v } }))}
+          />
+          <NumberField
+            label="PAC残量(㎥)"
+            value={form.header.pacRemaining}
+            onChange={(v) => setForm((p) => ({ ...p, header: { ...p.header, pacRemaining: v } }))}
+          />
+          <NumberField
+            label="脱離液 pH"
+            value={form.header.elutionPH}
+            onChange={(v) => setForm((p) => ({ ...p, header: { ...p.header, elutionPH: v } }))}
+          />
+          <NumberField
+            label="脱離液 水温(℃)"
+            value={form.header.elutionTemp}
+            onChange={(v) => setForm((p) => ({ ...p, header: { ...p.header, elutionTemp: v } }))}
+          />
+          <NumberField
+            label="含水率(%)"
+            value={form.header.waterContent}
+            onChange={(v) => setForm((p) => ({ ...p, header: { ...p.header, waterContent: v } }))}
+          />
         </div>
       </Card>
 
@@ -731,25 +759,53 @@ function SectionCard({
             />
           )}
           {v("temp") && (
-            <NumberField label="水温(℃)"$1/>
+            <NumberField
+              label="水温(℃)"
+              value={value.temp || ""}
+              onChange={(v) => set({ temp: v })}
+            />
           )}
           {v("turbidity") && (
-            <NumberField label="透視度"$1/>
+            <NumberField
+              label="透視度"
+              value={value.turbidity || ""}
+              onChange={(v) => set({ turbidity: v })}
+            />
           )}
           {v("pH") && (
-            <NumberField label="pH"$1/>
+            <NumberField
+              label="pH"
+              value={value.pH || ""}
+              onChange={(v) => set({ pH: v })}
+            />
           )}
           {v("DO") && (
-            <NumberField label="DO(mg/L)"$1/>
+            <NumberField
+              label="DO(mg/L)"
+              value={value.DO || ""}
+              onChange={(v) => set({ DO: v })}
+            />
           )}
           {v("residualChlorine") && (
-            <NumberField label="残塩(mg/L)"$1/>
+            <NumberField
+              label="残塩(mg/L)"
+              value={value.residualChlorine || ""}
+              onChange={(v) => set({ residualChlorine: v })}
+            />
           )}
           {v("headLoss") && (
-            <NumberField label="ろ抗高"$1/>
+            <NumberField
+              label="ろ抗高"
+              value={value.headLoss || ""}
+              onChange={(v) => set({ headLoss: v })}
+            />
           )}
           {v("aeration") && (
-            <NumberField label="送気量"$1/>
+            <NumberField
+              label="送気量"
+              value={value.aeration || ""}
+              onChange={(v) => set({ aeration: v })}
+            />
           )}
           {v("comment") && (
             <TextArea
@@ -814,25 +870,53 @@ function PointSubsections({
                 />
               )}
               {vis("temp") && (
-                <NumberField label="水温(℃)"$1/>
+                <NumberField
+                  label="水温(℃)"
+                  value={String(rec.temp ?? "")}
+                  onChange={(v) => set(label, { temp: v })}
+                />
               )}
               {vis("turbidity") && (
-                <NumberField label="透視度"$1/>
+                <NumberField
+                  label="透視度"
+                  value={String(rec.turbidity ?? "")}
+                  onChange={(v) => set(label, { turbidity: v })}
+                />
               )}
               {vis("pH") && (
-                <NumberField label="pH"$1/>
+                <NumberField
+                  label="pH"
+                  value={String(rec.pH ?? "")}
+                  onChange={(v) => set(label, { pH: v })}
+                />
               )}
               {vis("DO") && (
-                <NumberField label="DO(mg/L)"$1/>
+                <NumberField
+                  label="DO(mg/L)"
+                  value={String(rec.DO ?? "")}
+                  onChange={(v) => set(label, { DO: v })}
+                />
               )}
               {vis("residualChlorine") && (
-                <NumberField label="残塩(mg/L)"$1/>
+                <NumberField
+                  label="残塩(mg/L)"
+                  value={String(rec.residualChlorine ?? "")}
+                  onChange={(v) => set(label, { residualChlorine: v })}
+                />
               )}
               {vis("headLoss") && (
-                <NumberField label="ろ抗高"$1/>
+                <NumberField
+                  label="ろ抗高"
+                  value={String(rec.headLoss ?? "")}
+                  onChange={(v) => set(label, { headLoss: v })}
+                />
               )}
               {vis("aeration") && (
-                <NumberField label="送気量"$1/>
+                <NumberField
+                  label="送気量"
+                  value={String(rec.aeration ?? "")}
+                  onChange={(v) => set(label, { aeration: v })}
+                />
               )}
             </div>
           </Card>
@@ -903,9 +987,9 @@ function Footer() {
 function rowsToHtmlTable(rows: string[][]) {
   const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const body = rows
-    .map((r) => `<tr>${r.map((c,i)=>`<td${i===0? ' style="font-weight:bold"':''}>${esc(String(c ?? ""))}</td>`).join("")}</tr>`) 
+    .map((r) => `<tr>${r.map((c,i)=>`<td${i===0? ' style=\"font-weight:bold\"':''}>${esc(String(c ?? ""))}</td>`).join("")}</tr>`) 
     .join("");
-  return `<table class="w-full border-collapse"><tbody>${body}</tbody></table>`;
+  return `<table class=\"w-full border-collapse\"><tbody>${body}</tbody></table>`;
 }
 
 function PreviewSheet({ rows, onClose }: { rows: string[][]; onClose: () => void }) {
@@ -996,7 +1080,7 @@ function NumberField({
       <input
         type="text"
         inputMode="decimal"
-        pattern={allowNegative ? "^-?[0-9]*\\.?[0-9]*$" : "^[0-9]*\\.?[0-9]*$"}
+        pattern={allowNegative ? "^-?[0-9]*\.?[0-9]*$" : "^[0-9]*\.?[0-9]*$"}
         className="border rounded-xl px-3 py-2 focus:outline-none focus:ring"
         value={value}
         placeholder={placeholder}
